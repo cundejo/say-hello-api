@@ -1,0 +1,25 @@
+{
+  "name": "@cundejo/say-hello-api",
+  "description": "API to say hello",
+  "author": "Oliver S <oliver@techalos.com>",
+  "version": "0.0.1",
+  "license": "LGPL-3.0-or-later",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "test": "echo 'No tests defined' && exit 0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "fastify": "^5.2.1"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "22.0.0",
+    "@types/node": "^22.13.10",
+    "prettier": "3.5.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "5.8.2"
+  }
+}

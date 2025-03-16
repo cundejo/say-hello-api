@@ -1,0 +1,53 @@
+name: Deploy Say Hello API to Cloud Run
+
+concurrency:
+  group: deploy-cloud-run
+  cancel-in-progress: true
+
+on:
+# Uncomment the following lines to enable the workflow on push to the main branch
+#  push:
+#    branches: [main]
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploying
+    runs-on: ubuntu-latest
+    env:
+      # The correct format for Docker image names in Artifact Registry is:
+      # REGION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:TAG
+      IMAGE_NAME: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/say-hello-api/api-image:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Setup GCP SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev
+
+      # Optional if you don't have anything to add to the .env file
+      - name: Create .env file.
+        run: echo '${{ secrets.ENV_FILE }}' > .env
+
+      - name: Build Docker Image
+        run: docker build -f Dockerfile -t ${{ env.IMAGE_NAME }} .
+
+      - name: Push Docker Image
+        run: docker push ${{ env.IMAGE_NAME }}
+
+      # Documentation https://cloud.google.com/sdk/gcloud/reference/run/deploy
+      - name: Create or Update the Cloud Run service
+        run: |
+          gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} \
+            --image ${{ env.IMAGE_NAME }} --region us-central1 --platform managed \
+            --max-instances 2 --allow-unauthenticated
+
