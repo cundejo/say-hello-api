@@ -4,7 +4,9 @@ import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 const server: FastifyInstance = fastify({ logger: true });
 
 server.get('/', async (request: FastifyRequest, reply: FastifyReply) => {
-  console.log("request.query", request.query)
+  // Testing environment variables
+  console.log("Secret 1", process.env.SECRET1);
+
   const name = (request.query as any)?.name as string | undefined;
   reply.send(name ? `Hello ${name}!` : 'Hello World!');
 });
