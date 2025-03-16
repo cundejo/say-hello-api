@@ -1,6 +1,6 @@
 A simple API that says hello to a name. Made with [Fastify](https://fastify.dev/) and deployed on Google Cloud Run.
 
-Please check the Blog Post [here](https://techalos.com/blog/fastify-api-on-cloudrun) for more details.
+Please check the Blog Post [here](https://cundejo.notion.site/Deploying-to-Google-Cloud-Run-from-GitHub-Actions-f777e0a94f104e41841d972259594812) for more details.
 
 ## Development
 

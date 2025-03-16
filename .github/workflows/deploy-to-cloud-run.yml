@@ -18,7 +18,7 @@ jobs:
     env:
       # The correct format for Docker image names in Artifact Registry is:
       # REGION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:TAG
-      IMAGE_NAME: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/say-hello-api/api-image:latest
+      IMAGE_NAME: us-central1-docker.pkg.dev/say-hello-api/say-hello-api/api-image:latest
 
     steps:
       - uses: actions/checkout@v4
@@ -47,7 +47,7 @@ jobs:
       # Documentation https://cloud.google.com/sdk/gcloud/reference/run/deploy
       - name: Create or Update the Cloud Run service
         run: |
-          gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} \
+          gcloud run deploy say-hello-api \
             --image ${{ env.IMAGE_NAME }} --region us-central1 --platform managed \
             --max-instances 2 --allow-unauthenticated
 
